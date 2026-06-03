@@ -1,0 +1,127 @@
+import java.util.*;
+
+// Parent Class
+class Product {
+    protected int id;
+    protected String name;
+    protected double price;
+
+    public Product(int id, String name, double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+
+    public void display() {
+        System.out.println(id + " - " + name + " - Rs." + price);
+    }
+}
+
+// Child Class: Electronics
+class Electronics extends Product {
+    public Electronics(int id, String name, double price) {
+        super(id, name, price);
+    }
+
+    @Override
+    public void display() {
+        System.out.println("[Electronics] " + id + " - " + name + " - Rs." + price);
+    }
+}
+
+// Child Class: Clothing
+class Clothing extends Product {
+    public Clothing(int id, String name, double price) {
+        super(id, name, price);
+    }
+
+    @Override
+    public void display() {
+        System.out.println("[Clothing] " + id + " - " + name + " - Rs." + price);
+    }
+}
+
+// Composition Class
+class Cart {
+    private List<Product> productList;
+
+    public Cart() {
+        productList = new ArrayList<>();
+    }
+
+    public void addProduct(Product p) {
+        productList.add(p);
+        System.out.println("Product added to cart!");
+    }
+
+    public void viewCart() {
+        double total = 0;
+
+        if (productList.isEmpty()) {
+            System.out.println("Cart is empty.");
+            return;
+        }
+
+        for (Product p : productList) {
+            p.display();  // Polymorphism
+            total += p.price;
+        }
+
+        System.out.println("Total Amount: Rs." + total);
+    }
+}
+
+// Main Class
+class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Cart cart = new Cart();
+
+        // Products
+        Product p1 = new Electronics(1, "Mobile", 15000);
+        Product p2 = new Electronics(2, "Laptop", 50000);
+        Product p3 = new Clothing(3, "Shirt", 800);
+        Product p4 = new Clothing(4, "Jeans", 1200);
+
+        while (true) {
+            System.out.println("\n===== Product Menu =====");
+            p1.display();
+            p2.display();
+            p3.display();
+            p4.display();
+
+            System.out.println("\n1. Add Product");
+            System.out.println("2. View Cart");
+            System.out.println("3. Exit");
+            System.out.print("Enter choice: ");
+
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Product ID: ");
+                    int id = sc.nextInt();
+
+                    switch (id) {
+                        case 1: cart.addProduct(p1); break;
+                        case 2: cart.addProduct(p2); break;
+                        case 3: cart.addProduct(p3); break;
+                        case 4: cart.addProduct(p4); break;
+                        default: System.out.println("Invalid ID!");
+                    }
+                    break;
+
+                case 2:
+                    cart.viewCart();
+                    break;
+
+                case 3:
+                    System.out.println("Thank you for shopping!");
+                    System.exit(0);
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
+}
